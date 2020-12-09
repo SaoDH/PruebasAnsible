@@ -1,0 +1,4 @@
+---
+  - name: Check System Status
+    shell: systemctl status docker | grep -m1 'Active:'
+    register: statusR

@@ -1,0 +1,31 @@
+---
+ - name: Run First Check
+   shell: systemctl status docker | grep -m1 'Active:'
+   register: statusReal
+   notify: set_fakt
+
+ - name: Status in
+   set_fact:
+         status_result: '{{(statusReal.stdout).split()[1]}}'
+
+ - name: Systemctl Status Out
+   debug:
+         var: status_result
+
+# - name: First Check
+#   set_fact: status
+#   notify:
+#         - Check System Status
+#
+# - debug:
+#         - var: d_status
+ - debug:
+         var: statusR
+
+ - name: Start inactive servers
+   shell: systemctl start docker
+   when:
+         - status_result == 'inactive'
+
+   notify:
+         - Check System Status

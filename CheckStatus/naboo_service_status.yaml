@@ -1,0 +1,7 @@
+---
+  - hosts: db
+    vars_files:
+          - ./roles/checkear_servicio_real/vars/main.yml
+    become: yes
+    roles:
+          - checkear_servicio_real

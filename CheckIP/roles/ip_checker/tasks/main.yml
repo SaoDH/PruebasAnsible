@@ -1,0 +1,34 @@
+---
+
+- name: Get IPv4 Address
+  debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
+  register: ippeed
+
+- name: Dig DNS providing HostName/ipaddr
+  shell: dig $(hostname) +short
+  register: digged
+
+- name: Set IPR and DNR VARIABLES value
+  set_fact:
+           myip: "{{ inventory_hostname }}"
+           digr: "{{ digged.stdout }}"
+#           digr: "192.168.1.146"
+
+- name: New Facts
+  debug:
+        msg:
+          - "Get Digged IP"
+          - "Digged IPv4 {{ digr }}"
+          - "Regular IPv4 {{ myip }}"
+
+- debug:
+        msg:
+          - "----------They coincide!----------------"
+  when:
+      - myip == digr
+
+-  fail:
+        msg:
+          - "---------ERROR MISSMATCH [ERROR]----------------"
+   when:
+      - myip != digr

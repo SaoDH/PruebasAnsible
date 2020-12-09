@@ -1,0 +1,6 @@
+---
+  - name: Check IP and DOMAIN
+    hosts: db
+    become: yes
+    roles:
+          - ipChecker
